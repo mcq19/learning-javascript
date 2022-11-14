@@ -1,0 +1,95 @@
+//@ts-check
+/** @type {HTMLCanvasElement} */ //@ts-ignore 
+let canvas = document.getElementById("canvas-1");
+canvas.width = 100;
+canvas.height = 100;
+/** @type {CanvasRenderingContext2DSettings} */ // @ts-ignore
+let context = canvas.getContext("2d");
+
+let squares = []; 
+let gridSize = 4;
+let size = canvas.width / gridSize 
+let colors = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"];
+
+
+//All of these incrementers do the same 
+// row = row +1
+// row += 1
+// row++ 
+for(let row = 0; row < gridSize; row++)  {
+    for(let col = 0; col < gridSize; col++){
+    let colorIndex = Math.floor( Math.random() * colors.length );
+    let color = colors[colorIndex]; 
+    drawSquare(col * size, row * size, color, size); 
+    }
+
+}
+
+
+function drawSquare(x, y, color, size = 25 ) {
+    context.fillStyle = color; 
+    context.fillRect(x, y, size, size);
+}
+
+let currentTime = 0;
+const refreshRate = 500
+let lastRefresh = 0; 
+
+function drawLoop(timestamp) {
+
+    let elapsedTime = timestamp - currentTime; 
+    currentTime = timestamp; 
+
+    lastRefresh = lastRefresh + elapsedTime; 
+
+    if(lastRefresh >= refreshRate) {
+    lastRefresh = 0 
+    for(let row = 0; row < gridSize; row++)  {
+        for(let col = 0; col < gridSize; col++){
+        let colorIndex = Math.floor( Math.random() * colors.length );
+        let color = colors[colorIndex]; 
+        drawSquare(col * size, row * size, color, size); 
+        }
+        
+        requestAnimationFrame(drawLoop); 
+}
+    }
+
+   
+}
+requestAnimationFrame(drawLoop); 
+
+
+
+class ClickBox {
+constructor(x, y, size, colors) {
+    this.x = x;
+    this.y = y;
+    this.size = size;
+
+    this.isClicked = false; 
+    this.refreshRate = 500;
+    this.lastRefresh = 0; 
+    this.colors = colors; 
+    this.color = "red"; 
+    
+    this.setColor();
+    
+}
+setColor() {
+    let colorIndex = Math.floor(Math.random() * this.colors.length);
+this.color = this.colors[colorIndex];
+}
+update(timeElapsed) {
+   this.lastRefresh += timeElapsed; 
+
+   if(this.lastRefresh < this.refreshRate) return; 
+   
+    if(this.lastRefresh >= this.refreshRate){
+        this.setColor();
+
+    }
+}
+
+draw() {}
+}

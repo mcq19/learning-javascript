@@ -35,8 +35,8 @@ console.log("ages is an array", ages);
 let secondAge = ages[1];
 
 let student = {
-    name: "Toby"
-    grade: "A++"
+    name: "Toby",
+    grade: "A++",
     gpa: 4.0,
     wearsAHat: true, 
     Friends: ["Jackson", "Lukas"]
